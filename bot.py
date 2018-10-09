@@ -16,11 +16,8 @@ banned_list = []
 class BannedStickersFilter(BaseFilter):
     def filter(self,message):
         global banned_list
-        return message.set_name in banned_list
+        return message.sticker.set_name in banned_list
 
-
-#initializing the banned stickers filter
-banned_filter = BannedStickersFilter()
 
 #Defining the commands
 
@@ -35,7 +32,8 @@ def documentation(bot, update):
 
 # deletes the stickers in the banned list
 def del_message(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
+    bot.delete_message(chat_id = update.message.chat_id,
+                       message_id = update.message.id)
 
 # /addPack
 def addPack(bot,update,args):
@@ -68,6 +66,9 @@ def showBanList(bot,update):
 
 
 def main():
+
+    #initializing the banned stickers filter
+    banned_filter = BannedStickersFilter()
     
     #initializing the bot
     bot = telegram.Bot(token='658579017:AAEAsI7YzILDJdMmU6c7uicoHs2CA0KGTHg')
@@ -79,14 +80,21 @@ def main():
 
     start_handler = CommandHandler('start', start)
     dispatcher.add_handler(start_handler)
+
     documentation_handler = CommandHandler('documentation',documentation)
     dispatcher.add_handler(documentation_handler)
+
     addPack_handler = CommandHandler('addPack',addPack,pass_args = True)
     dispatcher.add_handler(addPack_handler)
+
     rmvPack_handler = CommandHandler('rmvPack',rmvPack,pass_args = True)
     dispatcher.add_handler(rmvPack_handler)        
+
     showBanList_handler = CommandHandler('showBanList',showBanList)
     dispatcher.add_handler(showBanList_handler)
+
+    delete_handler = MessageHandler(banned_filter,del_message)
+    dispatcher.add_handler(delete_handler)
 
     updater.start_polling()
     updater.idle()
