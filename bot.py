@@ -71,8 +71,8 @@ def main():
     banned_filter = BannedStickersFilter()
     
     #initializing the bot
-    bot = telegram.Bot(token='658579017:AAEAsI7YzILDJdMmU6c7uicoHs2CA0KGTHg')
-    updater = Updater(token = '658579017:AAEAsI7YzILDJdMmU6c7uicoHs2CA0KGTHg')
+    bot = telegram.Bot(token='Token')
+    updater = Updater(token = 'Token')
     dispatcher = updater.dispatcher
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
